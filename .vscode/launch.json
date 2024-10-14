@@ -1,0 +1,13 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "C/C++ Runner: Debug Session",
+      "type": "lldb",
+      "request": "launch",
+      "args": [],
+      "cwd": "/Users/oguzgundogdu/Projects/CppAutomation/server",
+      "program": "/Users/oguzgundogdu/Projects/CppAutomation/server/build/Debug/outDebug"
+    }
+  ]
+}

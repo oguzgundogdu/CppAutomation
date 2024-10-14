@@ -1,0 +1,22 @@
+{
+    "configurations": [
+        {
+            "name": "macos-clang-arm64",
+            "includePath": [
+                "${workspaceFolder}/**",
+                "/opt/homebrew/**",
+                "${workspaceFolder}/server/web_api/extensions/**",
+                "${workspaceFolder}/server/web_api/data/repositories/**",
+                "${workspaceFolder}/server/web_api/domain/repositories/**",
+            ],
+            "compilerPath": "/usr/bin/clang",
+            "cStandard": "${default}",
+            "cppStandard": "${default}",
+            "intelliSenseMode": "macos-clang-arm64",
+            "compilerArgs": [
+                ""
+            ]
+        }
+    ],
+    "version": 4
+}
