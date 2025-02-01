@@ -1,23 +1,30 @@
 #include <iostream>
-#include "IStudentRepository.cpp"
-#include "StudentRepository.cpp"
+#include <array>
+#include "../../data/repositories/StudentRepository.cpp"
+#include "../../extensions/UuidExtensions.cpp"
+
+using namespace std;
 
 class StudentService
 {
 private:
-    std::shared_ptr<IStudentRepository> m_repository;
+    std::shared_ptr<StudentRepository> m_repository;
 
 public:
     void addStudent(std::string name, int status) const
     {
-        Student *student = new Student(name, status);
-        m_repository->addStudent(*student);
+        uuid_t studentId;
+        UuidExtensions::generateUuid(studentId);
 
+        Student *student = new Student(studentId, name, status, DateTimeExtensions::now(), DateTimeExtensions::now());
+        m_repository->addStudent(*student);
         delete student;
     }
-    void updateStudent(int id, std::string name, int status) const
+    void updateStudent(uuid_t id, std::string name, int status) const
     {
-        Student *student = m_repository->getStudent(id);
+        uuid_t studentId;
+        memcpy(studentId, id, sizeof(uuid_t));
+        Student *student = m_repository->getStudent(studentId);
         if (student == nullptr)
         {
             throw std::runtime_error("Student not found");
@@ -28,9 +35,11 @@ public:
 
         delete student;
     }
-    void deleteStudent(int id) const
+    void deleteStudent(uuid_t &id) const
     {
-        Student *student = m_repository->getStudent(id);
+        uuid_t studentId;
+        memcpy(studentId, id, sizeof(uuid_t));
+        Student *student = m_repository->getStudent(studentId);
         if (student == nullptr)
         {
             throw std::runtime_error("Student not found");
@@ -39,15 +48,17 @@ public:
 
         delete student;
     }
-    Student *getStudent(int id) const
+    Student *getStudent(uuid_t &id) const
     {
-        return m_repository->getStudent(id);
+        uuid_t studentId;
+        memcpy(studentId, id, sizeof(uuid_t));
+        return m_repository->getStudent(studentId);
     }
-    std::vector<Student> getStudents() const
+    std::vector<std::shared_ptr<Student>> getStudents() const
     {
         return m_repository->getStudents();
     }
-    StudentService(const std::shared_ptr<IStudentRepository> repository) : m_repository(repository) {}
+    StudentService(const std::shared_ptr<StudentRepository> repository) : m_repository(repository) {}
 
     ~StudentService()
     {

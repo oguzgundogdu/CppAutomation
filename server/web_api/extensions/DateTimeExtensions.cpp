@@ -3,14 +3,16 @@
 #include <sstream>
 #include <iomanip>
 
-class DataTimeExtensions
+#pragma once
+
+class DateTimeExtensions
 {
 public:
     static std::string tmToString(const std::tm &tm)
     {
         std::ostringstream ss;
-        ss << (tm.tm_year + 1900) << '-'                                  
-           << std::setw(2) << std::setfill('0') << (tm.tm_mon + 1) << '-' 
+        ss << (tm.tm_year + 1900) << '-'
+           << std::setw(2) << std::setfill('0') << (tm.tm_mon + 1) << '-'
            << std::setw(2) << std::setfill('0') << tm.tm_mday << ' '
            << std::setw(2) << std::setfill('0') << tm.tm_hour << ':'
            << std::setw(2) << std::setfill('0') << tm.tm_min << ':'
@@ -24,5 +26,11 @@ public:
         std::istringstream ss(datetimeStr);
         ss >> std::get_time(&tm, "%Y-%m-%d %H:%M:%S");
         return tm;
+    }
+
+    static std::tm now()
+    {
+        std::time_t now = std::time(nullptr);
+        return *std::localtime(&now);
     }
 };
